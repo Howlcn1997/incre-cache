@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="button">请求</button>
+    <script src="./dist/umd/incre-cache.min.js"></script>
+    <script>
+      const Scheduler = window.increCache.scheduler.default;
+      const scheduler = new Scheduler({
+        batchMaxInterval: 100,
+        batchMaxSize: 50,
+      });
+      let count = 0;
+      scheduler.listen((tasks) => {
+        count++;
+        tasks.forEach((element) => {
+          scheduler.commit(element.symbol, `I am ${element.query} - ${count}`);
+        });
+      });
+      button.onclick = () => {
+        Array.from({ length: 90 }).forEach((_, index) => {
+          scheduler.schedule(`query-${index}`).then(console.log);
+        });
+        let n = 0;
+        function loop() {
+          n++;
+          setTimeout(() => {
+            scheduler.schedule("loop").then(console.log);
+            if (n > 100) {
+              return;
+            }
+            loop();
+          }, 5);
+        }
+        loop();
+      };
+    </script>
+  </body>
+</html>
