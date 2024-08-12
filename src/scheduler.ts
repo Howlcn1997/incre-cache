@@ -50,8 +50,11 @@ class Scheduler<T extends any> {
   config: SchedulerConfig;
 
   private queryQueue: QueryQueue<T>[] = [];
+
   private queryPending = new Map<Symbol, QueryTask<T>>();
+
   private listeners: ((tasks: ListenerTask<T>[]) => any)[] = [];
+
   private startTime: number = 0;
 
   private scheduleTimer: NodeJS.Timeout | undefined;
@@ -104,10 +107,7 @@ class Scheduler<T extends any> {
 
       pendingQueryTasks.forEach((task) => {
         self.queryPending.set(task.symbol, task);
-        listenerQueryTasks.push({
-          symbol: task.symbol,
-          query: task.query,
-        });
+        listenerQueryTasks.push({ symbol: task.symbol, query: task.query });
       });
 
       self.listeners.forEach((listener) => listener(listenerQueryTasks));

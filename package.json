@@ -18,7 +18,8 @@
     "compiled"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "localforage": "^1.10.0"
   },
   "devDependencies": {
     "father": "^4.4.6"
